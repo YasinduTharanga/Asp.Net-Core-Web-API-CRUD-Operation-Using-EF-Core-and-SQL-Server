@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudentAPI.Models;
+using StudentAPI.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ builder.Services.AddSwaggerGen();
 //Dependency Injection of DbContext Class
 builder.Services.AddDbContext<APIDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
-
+builder.Services.AddScoped<ERPTestService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

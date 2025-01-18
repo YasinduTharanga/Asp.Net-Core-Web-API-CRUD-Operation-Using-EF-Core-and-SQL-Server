@@ -10,5 +10,6 @@ namespace StudentAPI.Models
         }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }
