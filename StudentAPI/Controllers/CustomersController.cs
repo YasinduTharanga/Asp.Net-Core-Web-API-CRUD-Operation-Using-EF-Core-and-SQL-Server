@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentAPI.Models;
+using StudentAPI.Service;
 
 namespace StudentAPI.Controllers
 {
@@ -14,12 +15,26 @@ namespace StudentAPI.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly APIDbContext _context;
+        private readonly ERPTestService _eRPTestService;
 
-        public CustomersController(APIDbContext context)
+        public CustomersController(APIDbContext context, ERPTestService eRPTestService)
         {
             _context = context;
+            _eRPTestService = eRPTestService;
         }
 
+
+        //GET: api/Customers/High Balance
+        [HttpGet("High-Balance")]
+        public async Task<ActionResult<IEnumerable<Customer>>> GetHighBalanceCustomers()
+        {
+            var customers = await _eRPTestService.GetHighBalanceCustomersAsync();
+            if (customers == null || customers.Count ==0)
+            {
+                return NotFound("No customers found with a balance greater than 100,000.");
+            }
+            return Ok(customers);
+        }
         // GET: api/Customers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
